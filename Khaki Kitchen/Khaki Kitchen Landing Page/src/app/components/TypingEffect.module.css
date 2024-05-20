@@ -1,0 +1,15 @@
+.typingEffect {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .cursor {
+    position: absolute;
+    top: 0;
+    right: -0.1em; /* Adjust the position of the cursor */
+    width: 0.05em; /* Adjust the width of the cursor */
+    height: 1em; /* Height of the cursor (same as line height) */
+    background-color: #C14627;
+  }
+
+  
