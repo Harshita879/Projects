@@ -1,0 +1,13 @@
+.scroll-smooth {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.scroll-up {
+  transform: translateY(-100%);
+  opacity: 1;
+}
+
+.scroll-down {
+  transform: translateY(100%);
+  opacity: 0;
+}
