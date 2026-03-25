@@ -1,0 +1,632 @@
+export interface BalanceTransaction {
+    balance_transaction_id: string
+    created_utc: string
+    available_on_utc: string
+    currency: string
+    gross: number
+    fee: number
+    net: number
+    reporting_category?: string
+    description?: string
+    automatic_payout_id?: string
+    source_id?: string
+    type?: string
+    // Refund fields
+    is_refund?: boolean
+    refund_id?: string
+    refund_amount?: number
+    original_charge_id?: string
+    refund_reason?: string
+    refund_date?: string
+    refund_status?: string
+    // Chargeback fields
+    is_chargeback?: boolean
+    chargeback_id?: string
+    chargeback_amount?: number
+    chargeback_reason?: string
+    chargeback_date?: string
+}
+
+export interface Payout {
+    id: string
+    amount: number
+    currency: string
+    arrival_date: string
+    created: string
+    status: string
+    type: string
+    method: string
+    description: string
+    automatic: string
+    destination: string
+}
+
+export interface BankTransaction {
+    Date: string
+    Description: string
+    'Paid Out': string
+    'Paid In': string
+    Balance: string
+}
+
+export interface PayoutSummary {
+    payout_id: string
+    payout_date: string
+    gross_sales: number
+    stripe_fees: number
+    net_amount: number
+    transaction_count: number
+    bank_matched: boolean
+    bank_date: string | null
+    bank_description: string | null
+    status: 'MATCHED' | 'UNMATCHED'
+    transactions: BalanceTransaction[]
+}
+
+export interface ReconciliationResult {
+    payouts: PayoutSummary[]
+    summary: {
+        total_payouts: number
+        matched_count: number
+        unmatched_count: number
+        match_rate: number
+        total_gross: number
+        total_fees: number
+    }
+}
+
+export interface AmazonSettlementRow {
+    'settlement-id': string
+    'settlement-start-date': string
+    'settlement-end-date': string
+    'deposit-date': string
+    'total-amount': string
+    currency: string
+    'transaction-type': string
+    'order-id': string
+    'merchant-order-id': string
+    'adjustment-id': string
+    'shipment-id': string
+    'marketplace-name': string
+    'amount-type': string
+    'amount-description': string
+    amount: string
+    'fulfillment-id': string
+    'posted-date': string
+    'posted-date-time': string
+    'order-item-code': string
+    'merchant-order-item-id': string
+    'merchant-adjustment-item-id': string
+    sku: string
+    'quantity-purchased': string
+    'promotion-id': string
+}
+
+export interface AmazonSettlementSummary {
+    settlement_id: string
+    deposit_date: string
+    settlement_start: string
+    settlement_end: string
+    currency: string
+    principal: number
+    commission: number
+    fba_fees: number
+    shipping: number
+    other: number
+    total_amount: number
+    transaction_count: number
+    bank_matched: boolean
+    bank_date: string | null
+    bank_description: string | null
+    status: 'MATCHED' | 'UNMATCHED'
+    transactions: AmazonSettlementRow[]
+}
+
+export interface AmazonReconciliationResult {
+    settlements: AmazonSettlementSummary[]
+    summary: {
+        total_settlements: number
+        matched_count: number
+        unmatched_count: number
+        match_rate: number
+        total_principal: number
+        total_fees: number
+        total_net: number
+    }
+}
+
+// Clearing Account Types
+export type ClearingEntryType =
+    | 'EXPECTED_DEPOSIT'   // Payout from Stripe/Amazon
+    | 'ACTUAL_DEPOSIT'     // Bank deposit received
+    | 'FEE_ADJUSTMENT'     // Manual adjustment for fees
+    | 'CHARGEBACK'         // Dispute/chargeback (reduces balance)
+    | 'REFUND_CLAWBACK'    // Refund deducted from future payout
+
+export type ClearingEntryStatus = 'MATCHED' | 'UNMATCHED' | 'PARTIAL'
+
+// Money type (integer minor units)
+export type CurrencyCode = string
+
+export interface Money {
+    amountMinor: number // Integer minor units (cents/pence)
+    currency: CurrencyCode
+}
+
+// Match status and reasons
+export type MatchStatus = 'MATCHED' | 'UNMATCHED' | 'AMBIGUOUS' | 'EXCLUDED'
+
+export type MatchReasonCode =
+    | 'DATE_INVALID'
+    | 'DATE_OUT_OF_TOLERANCE'
+    | 'AMOUNT_OUT_OF_TOLERANCE'
+    | 'CURRENCY_MISMATCH'
+    | 'ALREADY_MATCHED'
+    | 'NO_CANDIDATES'
+    | 'AMBIGUOUS_TOP_CANDIDATES'
+    | 'PARSE_ERROR'
+    | 'OUT_OF_PERIOD'
+    | 'NOT_A_DEPOSIT'
+    | 'NEGATIVE_AMOUNT'
+    | 'PLATFORM_NOT_UPLOADED'
+    | 'MAPPING_INCOMPLETE'
+    | 'NO_PAYOUTS_FOUND'
+    | 'STATUS_NOT_PAID'
+    | 'DATA_INCONSISTENT'
+    | 'DATE_FROM_TXNS'
+
+export interface MatchReason {
+    code: MatchReasonCode
+    message: string
+    details?: any
+}
+
+export interface ClearingEntry {
+    id: string
+    date: string
+    type: ClearingEntryType
+    reference: string
+    description: string
+    debit: number // in minor units
+    credit: number // in minor units
+    balance: number // in minor units
+    status: ClearingEntryStatus
+    matched_to?: string
+    source_data?: any
+    // Enhanced matching fields
+    match_status: MatchStatus
+    match_reason?: MatchReason
+    match_confidence?: number // 0..1
+    matched_bank_key?: string
+}
+
+export interface ClearingAccount {
+    platform: 'stripe' | 'amazon' | 'shopify' | 'paypal'
+    currency: string
+    period_start: string
+    period_end: string
+    opening_balance: number
+    closing_balance: number
+    entries: ClearingEntry[]
+    total_expected: number
+    total_received: number
+    variance: number
+    unmatched_expected: ClearingEntry[]
+    unmatched_received: ClearingEntry[]
+    match_count: number
+    unmatch_count: number
+    match_rate: number
+    // Refund tracking
+    total_refunds?: number
+    refund_count?: number
+    // Fee tracking
+    total_fees?: number
+}
+
+export interface ReconciliationResultV2 {
+    clearing_account: ClearingAccount
+    payouts: PayoutSummary[]
+    summary: {
+        total_payouts: number
+        matched_count: number
+        unmatched_count: number
+        match_rate: number
+        total_gross: number
+        total_fees: number
+        total_net: number
+        clearing_balanced: boolean
+    }
+}
+
+export interface AmazonReconciliationResultV2 {
+    clearing_account: ClearingAccount
+    settlements: AmazonSettlementSummary[]
+    summary: {
+        total_settlements: number
+        matched_count: number
+        unmatched_count: number
+        match_rate: number
+        total_principal: number
+        total_fees: number
+        total_net: number
+        clearing_balanced: boolean
+    }
+}
+
+// ============================================
+// UNIFIED MULTI-PLATFORM RECONCILIATION
+// ============================================
+
+export type Platform = 'stripe' | 'amazon' | 'paypal' | 'shopify'
+
+export interface PlatformConfig {
+    id: Platform
+    name: string
+    color: string
+    bankKeywords: string[]
+    requiredFiles: string[]
+    enabled: boolean
+}
+
+export const PLATFORM_CONFIGS: Record<Platform, PlatformConfig> = {
+    stripe: {
+        id: 'stripe',
+        name: 'Stripe',
+        color: 'blue',
+        bankKeywords: ['stripe', 'stripe payments'],
+        requiredFiles: ['balanceTransactions', 'payouts'],
+        enabled: true,
+    },
+    amazon: {
+        id: 'amazon',
+        name: 'Amazon',
+        color: 'orange',
+        bankKeywords: ['amazon', 'amazon marketplace', 'amzn'],
+        requiredFiles: ['settlementReport'],
+        enabled: true,
+    },
+    paypal: {
+        id: 'paypal',
+        name: 'PayPal',
+        color: 'blue',
+        bankKeywords: ['paypal'],
+        requiredFiles: ['transactionReport'],
+        enabled: false,
+    },
+    shopify: {
+        id: 'shopify',
+        name: 'Shopify Payments',
+        color: 'green',
+        bankKeywords: ['shopify', 'shpfy'],
+        requiredFiles: ['payouts'],
+        enabled: false,
+    },
+}
+
+// ============================================
+// DYNAMIC COLUMN MAPPING TYPES
+// ============================================
+
+export type CanonicalField =
+    // === STRIPE BALANCE TRANSACTIONS ===
+    | 'id'
+    | 'balance_transaction_id'
+    | 'created'
+    | 'available_on'
+    | 'amount'
+    | 'gross'
+    | 'fee'
+    | 'net'
+    | 'currency'
+    | 'type'
+    | 'reporting_category'
+    | 'source'
+    | 'automatic_payout_id'
+    | 'description'
+    // === STRIPE PAYOUTS ===
+    | 'payout_id'
+    | 'arrival_date'
+    | 'status'
+    // === SHOPIFY BALANCE TRANSACTIONS ===
+    | 'id'  // Shopify uses 'id' not 'transaction_id'
+    | 'source_order_id'
+    | 'processed_at'  // Shopify uses 'processed_at' not 'transaction_date'
+    | 'payout_status'
+    | 'source_id'
+    | 'source_type'
+    | 'source_order_transaction_id'
+    | 'test'
+    // === SHOPIFY PAYOUTS ===
+    | 'date'  // Shopify uses 'date' not 'payout_date'
+    | 'summary_charges_gross_amount'
+    | 'summary_charges_fee_amount'
+    | 'summary_refunds_gross_amount'
+    | 'summary_refunds_fee_amount'
+    | 'summary_adjustments_gross_amount'
+    | 'summary_adjustments_fee_amount'
+    | 'summary_reserved_funds_gross_amount'
+    | 'summary_reserved_funds_fee_amount'
+    | 'summary_retried_payouts_gross_amount'
+    | 'summary_retried_payouts_fee_amount'
+    // === AMAZON SETTLEMENTS ===
+    | 'settlement_id'
+    | 'settlement_start_date'
+    | 'settlement_end_date'
+    | 'deposit_date'
+    | 'total_amount'
+    | 'transaction_type'
+    | 'merchant_order_id'
+    | 'marketplace_name'
+    | 'amount_type'
+    | 'amount_description'
+    | 'posted_date'
+    | 'posted_date_time'
+    // === REFUNDS (ALL PLATFORMS) ===
+    | 'refund_id'
+    | 'refund_amount'
+    | 'refund_reason'
+    | 'original_charge_id'
+    | 'refund_date'
+    | 'refund_status'
+    // === CHARGEBACKS ===
+    | 'chargeback_id'
+    | 'chargeback_amount'
+    | 'chargeback_reason'
+    | 'chargeback_date'
+    // === DISPUTES ===
+    | 'dispute_id'
+    | 'dispute_amount'
+    | 'dispute_reason'
+    | 'dispute_status'
+    // === COMMON ===
+    | 'date'
+    | 'platform'
+
+export type ColumnMap = Partial<Record<CanonicalField, string>>
+
+export interface MappableFileState {
+    file: File | null
+    headers: string[]
+    columnMap: ColumnMap
+}
+
+export interface PlatformFiles {
+    stripe?: {
+        balanceTransactions?: MappableFileState
+        payouts?: MappableFileState
+    }
+    amazon?: {
+        settlementReport?: MappableFileState
+    }
+    paypal?: {
+        transactionReport?: MappableFileState
+    }
+    shopify?: {
+        balanceTransactions?: MappableFileState
+        payouts?: MappableFileState
+    }
+}
+
+export interface UploadState {
+    bankStatement: File | null
+    platforms: PlatformFiles
+}
+
+// Manual matching types
+export interface ManualMatchLink {
+    id: string
+    expectedId: string
+    bankId: string
+    createdAt: string
+}
+
+export interface UnallocatedDeposit {
+    id: string
+    date: string
+    description: string
+    amount: number
+    possiblePlatform?: Platform
+    notes?: string
+}
+
+// Platform state types
+export type PlatformState =
+    | { state: 'NOT_UPLOADED' }
+    | { state: 'MAPPING_INCOMPLETE'; missing_fields: string[] }
+    | { state: 'PARSE_FAILED'; error: string }
+    | { state: 'NO_PAYOUTS_FOUND' }
+    | { state: 'READY' }
+
+export interface PlatformReconciliation {
+    platform: Platform
+    clearingAccount: ClearingAccount
+    details: StripeDetails | AmazonDetails | null
+    platform_state: PlatformState
+}
+
+export interface StripeDetails {
+    payouts: PayoutSummary[]
+    totalGross: number
+    totalFees: number
+    totalNet: number
+}
+
+export interface AmazonDetails {
+    settlements: AmazonSettlementSummary[]
+    totalPrincipal: number
+    totalFees: number
+    totalNet: number
+}
+
+export interface UnifiedReconciliationResult {
+    periodStart: string
+    periodEnd: string
+    currency: string
+    bankStatement: {
+        totalDeposits: number // in minor units
+        totalWithdrawals: number // in minor units
+        depositCount: number
+    }
+    platforms: PlatformReconciliation[]
+    unallocated: {
+        deposits: UnallocatedDeposit[]
+        totalAmount: number // in minor units
+        count: number
+    }
+    summary: {
+        totalExpected: number // in minor units
+        totalReceived: number // in minor units
+        totalUnallocated: number // in minor units
+        totalVariance: number // in minor units
+        overallMatchRate: number
+        allBalanced: boolean
+        platformCount: number
+        platformsWithVariance: Platform[]
+        // Strict equation breakdown
+        bank_total_deposits_minor: number
+        bank_matched_deposits_minor: number
+        bank_unallocated_deposits_minor: number
+        bank_excluded_deposits_minor: number
+        platforms_expected_total_minor: number
+        variance_minor: number
+        hasExcludedPlatforms: boolean
+    }
+    debug?: {
+        parsing: Record<string, any>
+        matching: Record<string, any>
+        reasonsHistogram: Record<MatchReasonCode, number>
+    }
+}
+
+// ============================================
+// ENHANCED RECONCILIATION TYPES (SLICE 1)
+// ============================================
+
+/**
+ * Enhanced transaction with detailed fee breakdown
+ */
+export interface TransactionFeeBreakdown {
+    platformFee: number
+    processingFee: number
+    fixedFee: number
+    refundFee: number
+    otherFees: number
+    total: number
+    breakdown: Array<{
+        type: string
+        description: string
+        amount: number
+    }>
+}
+
+/**
+ * Enhanced transaction with full metadata
+ */
+export interface EnhancedTransaction {
+    id: string
+    date: Date
+    amount: number
+    fee: number
+    net: number
+    feeBreakdown: TransactionFeeBreakdown
+    type: 'charge' | 'refund' | 'chargeback' | 'adjustment' | 'reserve' | 'payout'
+    isRefund: boolean
+    isChargeback: boolean
+    isReserve: boolean
+    orderId?: string
+    customerId?: string
+    description: string
+    metadata: Record<string, any>
+}
+
+/**
+ * Match confidence scoring
+ */
+export interface MatchConfidence {
+    score: number // 0-100
+    level: 'exact' | 'high' | 'medium' | 'low' | 'manual_review'
+    reasons: string[]
+    warnings: string[]
+}
+
+/**
+ * Clearing account entry (for enhanced matching)
+ */
+export interface ClearingAccountEntry {
+    id: string
+    date: Date
+    type: 'debit' | 'credit'
+    description: string
+    amount: number
+    balance: number
+    status: 'matched' | 'unmatched' | 'partial'
+    matchId?: string
+    metadata?: Record<string, any>
+}
+
+/**
+ * Enhanced match with confidence scoring
+ */
+export interface EnhancedMatch {
+    expectedEntry: ClearingAccountEntry
+    actualEntry: ClearingAccountEntry
+    confidence: MatchConfidence
+    variance: number
+    matchedBy: 'amount_and_date' | 'amount_and_description' | 'fuzzy_amount' | 'manual'
+    requiresReview: boolean
+}
+
+/**
+ * Refund or chargeback transaction
+ */
+export interface RefundChargeback {
+    id: string
+    type: 'refund' | 'chargeback'
+    originalTransactionId?: string
+    amount: number
+    fee: number
+    date: Date
+    reason?: string
+    payoutId?: string
+    impact: 'deducted_from_payout' | 'separate_transaction'
+}
+
+/**
+ * Enhanced platform reconciliation result
+ */
+export interface PlatformReconciliationResult {
+    platform: 'stripe' | 'amazon' | 'shopify'
+    status: 'balanced' | 'variance' | 'errors'
+    
+    // Enhanced data
+    expectedTotal: number
+    actualTotal: number
+    variance: number
+    
+    // Fee analysis
+    totalFees: number
+    feeBreakdown: TransactionFeeBreakdown
+    expectedFees: number
+    actualFees: number
+    feeVariance: number
+    
+    // Refunds & chargebacks
+    refunds: RefundChargeback[]
+    chargebacks: RefundChargeback[]
+    refundTotal: number
+    chargebackTotal: number
+    
+    // Matching
+    matches: EnhancedMatch[]
+    unmatchedExpected: ClearingAccountEntry[]
+    unmatchedActual: ClearingAccountEntry[]
+    matchRate: number
+    
+    // Clearing account (using existing ClearingAccount type)
+    clearingAccount: ClearingAccount
+    
+    // Metadata
+    reconciliationDate: Date
+    periodStart: Date
+    periodEnd: Date
+}

@@ -1,0 +1,5 @@
+Payout ID,Status,Payout Date,Currency,Amount,Charges Gross,Charges Fee,Refunds Gross,Refunds Fee,Adjustments
+623721858,paid,2023-12-07,GBP,415.87,659.49,14.76,-29.99,-3.05,0.00
+623721859,paid,2023-12-08,GBP,456.25,625.99,16.56,-75.00,-2.18,0.00
+623721860,paid,2023-12-09,GBP,334.06,489.49,13.43,-125.00,-15.00,0.00
+623721861,paid,2023-12-14,GBP,123.45,137.50,5.00,-11.05,-0.32,-8.00
