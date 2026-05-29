@@ -1,0 +1,162 @@
+10.2s 1 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+10.2s 2 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+10.2s 3 0.00s - to python to disable frozen modules.
+10.2s 4 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+10.9s 5 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+10.9s 6 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+10.9s 7 0.00s - to python to disable frozen modules.
+10.9s 8 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+15.6s 9 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.6/125.6 kB 4.1 MB/s eta 0:00:00
+15.7s 10 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 163.9/163.9 kB 8.8 MB/s eta 0:00:00
+15.8s 11 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.6/125.6 kB 4.1 MB/s eta 0:00:00
+15.8s 12 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 163.9/163.9 kB 8.8 MB/s eta 0:00:00
+17.9s 13 Done.
+30.1s 14 Device: cuda
+30.1s 15 GPU: Tesla T4
+30.1s 16 Running 5 seeds: [42, 123, 456, 789, 1024]
+30.2s 17 All model classes loaded.
+30.2s 18 Training functions ready.
+30.2s 19 7 architectures defined (B7 constructed dynamically).
+30.3s 20 Multi-seed runner ready.
+254.3s 21 SHD: /kaggle/input/datasets/harshita879/shd-snns-dataset
+282.7s 22 SHD loaded: train=8156, test=2264, classes=20
+282.9s 23 ======================================================================
+282.9s 24 SHD: ARCHITECTURE SWEEP (5 seeds each)
+282.9s 25 ======================================================================
+282.9s 26 
+282.9s 27 B0_base on SHD (5 seeds)
+301.0s 28 Ep   0: tr=0.1327 va=0.1369 best_va=0.1369
+839.5s 29 Seed 42: acc=69.17% f1w=68.93% f1m=68.93% (548s)
+849.6s 30 Ep   0: tr=0.1334 va=0.1864 best_va=0.1864
+1426.2s 31 Seed 123: acc=67.84% f1w=66.77% f1m=66.71% (585s)
+1436.3s 32 Ep   0: tr=0.1423 va=0.2253 best_va=0.2253
+2195.2s 33 Seed 456: acc=69.35% f1w=69.49% f1m=69.28% (767s)
+2205.0s 34 Ep   0: tr=0.1511 va=0.2186 best_va=0.2186
+2988.8s 35 Seed 789: acc=68.60% f1w=67.78% f1m=67.73% (792s)
+2998.5s 36 Ep   0: tr=0.1383 va=0.2098 best_va=0.2098
+3752.8s 37 Seed 1024: acc=65.81% f1w=65.02% f1m=65.01% (762s)
+3752.8s 38 => 68.15% ± 1.28%  F1w=67.60% ± 1.60%  F1m=67.53% ± 1.55%
+3752.8s 39 
+3752.8s 40 B1_alif on SHD (5 seeds)
+3763.0s 41 Ep   0: tr=0.1327 va=0.2138 best_va=0.2138
+4412.0s 42 Seed 42: acc=65.86% f1w=64.26% f1m=64.08% (657s)
+4422.2s 43 Ep   0: tr=0.1289 va=0.1572 best_va=0.1572
+4876.3s 44 Seed 123: acc=65.11% f1w=64.11% f1m=63.94% (462s)
+4886.2s 45 Ep   0: tr=0.1427 va=0.2045 best_va=0.2045
+5312.2s 46 Seed 456: acc=65.19% f1w=63.63% f1m=63.59% (434s)
+5322.1s 47 Ep   0: tr=0.1534 va=0.2394 best_va=0.2394
+5839.4s 48 Seed 789: acc=65.06% f1w=64.38% f1m=64.39% (525s)
+5849.5s 49 Ep   0: tr=0.1462 va=0.2076 best_va=0.2076
+6446.2s 50 Seed 1024: acc=64.09% f1w=62.34% f1m=62.29% (605s)
+6446.2s 51 => 65.06% ± 0.56%  F1w=63.74% ± 0.75%  F1m=63.66% ± 0.73%
+6446.2s 52 
+6446.2s 53 B2_hetero on SHD (5 seeds)
+6456.2s 54 Ep   0: tr=0.1389 va=0.1917 best_va=0.1917
+7039.0s 55 Seed 42: acc=76.55% f1w=75.90% f1m=75.91% (591s)
+7048.8s 56 Ep   0: tr=0.1603 va=0.2010 best_va=0.2010
+7823.2s 57 Seed 123: acc=75.00% f1w=74.46% f1m=74.33% (782s)
+7833.0s 58 Ep   0: tr=0.1385 va=0.1793 best_va=0.1793
+8534.5s 59 Seed 456: acc=79.86% f1w=79.27% f1m=79.22% (709s)
+8544.1s 60 Ep   0: tr=0.1465 va=0.1851 best_va=0.1851
+9285.7s 61 Seed 789: acc=81.67% f1w=81.77% f1m=81.64% (749s)
+9295.4s 62 Ep   0: tr=0.1284 va=0.1873 best_va=0.1873
+10068.1s 63 Seed 1024: acc=76.99% f1w=76.54% f1m=76.44% (780s)
+10068.1s 64 => 78.01% ± 2.41%  F1w=77.59% ± 2.61%  F1m=77.51% ± 2.60%
+10068.1s 65 
+10068.1s 66 B3_2layer on SHD (5 seeds)
+10080.7s 67 Ep   0: tr=0.0848 va=0.1179 best_va=0.1179
+10870.8s 68 Seed 42: acc=70.10% f1w=69.28% f1m=69.37% (800s)
+10883.4s 69 Ep   0: tr=0.1021 va=0.1321 best_va=0.1321
+11473.7s 70 Seed 123: acc=72.75% f1w=72.43% f1m=72.40% (601s)
+11486.2s 71 Ep   0: tr=0.0891 va=0.1166 best_va=0.1166
+12489.2s 72 Seed 456: acc=75.71% f1w=75.23% f1m=75.16% (1013s)
+12502.2s 73 Ep   0: tr=0.0782 va=0.1228 best_va=0.1228
+13176.1s 74 Seed 789: acc=76.46% f1w=75.62% f1m=75.53% (685s)
+13188.5s 75 Ep   0: tr=0.0902 va=0.1312 best_va=0.1312
+14177.0s 76 Seed 1024: acc=77.61% f1w=76.87% f1m=76.78% (999s)
+14177.0s 77 => 74.52% ± 2.73%  F1w=73.88% ± 2.72%  F1m=73.85% ± 2.66%
+14177.0s 78 
+14177.0s 79 B4_inputBN on SHD (5 seeds)
+14188.4s 80 Ep   0: tr=0.1580 va=0.1833 best_va=0.1833
+15100.1s 81 Seed 42: acc=58.04% f1w=57.53% f1m=57.30% (921s)
+15111.4s 82 Ep   0: tr=0.1705 va=0.2571 best_va=0.2571
+16019.7s 83 Seed 123: acc=60.29% f1w=59.35% f1m=59.16% (917s)
+16031.2s 84 Ep   0: tr=0.1897 va=0.2553 best_va=0.2553
+16929.3s 85 Seed 456: acc=65.90% f1w=65.67% f1m=65.44% (907s)
+16940.7s 86 Ep   0: tr=0.1866 va=0.2615 best_va=0.2615
+17836.1s 87 Seed 789: acc=60.60% f1w=58.94% f1m=58.63% (905s)
+17847.5s 88 Ep   0: tr=0.1940 va=0.2920 best_va=0.2920
+18554.3s 89 Seed 1024: acc=62.06% f1w=61.25% f1m=60.95% (716s)
+18554.3s 90 => 61.38% ± 2.60%  F1w=60.55% ± 2.82%  F1m=60.30% ± 2.83%
+18554.3s 91 
+18554.3s 92 B5_attention on SHD (5 seeds)
+18563.7s 93 Ep   0: tr=0.1301 va=0.2019 best_va=0.2019
+19156.1s 94 Seed 42: acc=82.11% f1w=81.19% f1m=81.16% (600s)
+19165.3s 95 Ep   0: tr=0.0958 va=0.2111 best_va=0.2111
+19507.3s 96 Seed 123: acc=79.95% f1w=79.97% f1m=79.88% (349s)
+19516.5s 97 Ep   0: tr=0.1124 va=0.2323 best_va=0.2323
+20232.0s 98 Seed 456: acc=82.46% f1w=82.15% f1m=82.11% (723s)
+20241.3s 99 Ep   0: tr=0.1182 va=0.2522 best_va=0.2522
+20969.2s 100 Seed 789: acc=81.93% f1w=82.01% f1m=81.85% (735s)
+20978.6s 101 Ep   0: tr=0.1054 va=0.2610 best_va=0.2610
+21694.5s 102 Seed 1024: acc=82.64% f1w=82.45% f1m=82.38% (723s)
+21694.5s 103 => 81.82% ± 0.97%  F1w=81.56% ± 0.90%  F1m=81.48% ± 0.90%
+21694.5s 104 
+21694.5s 105 B6_scale512 on SHD (5 seeds)
+21705.6s 106 Ep   0: tr=0.1531 va=0.2120 best_va=0.2120
+22375.6s 107 Seed 42: acc=66.96% f1w=66.33% f1m=66.15% (679s)
+22386.6s 108 Ep   0: tr=0.1578 va=0.2429 best_va=0.2429
+23246.9s 109 Seed 123: acc=69.48% f1w=68.80% f1m=68.81% (869s)
+23258.1s 110 Ep   0: tr=0.1522 va=0.2306 best_va=0.2306
+23646.0s 111 Seed 456: acc=67.45% f1w=65.20% f1m=64.86% (397s)
+23657.3s 112 Ep   0: tr=0.1436 va=0.1873 best_va=0.1873
+24361.4s 113 Seed 789: acc=71.55% f1w=71.06% f1m=71.01% (713s)
+24373.4s 114 Ep   0: tr=0.1502 va=0.1829 best_va=0.1829
+25238.7s 115 Seed 1024: acc=67.45% f1w=66.42% f1m=66.13% (875s)
+25238.7s 116 => 68.58% ± 1.72%  F1w=67.56% ± 2.10%  F1m=67.39% ± 2.22%
+25238.7s 117 
+25238.7s 118 SHD top-2: ['B5_attention', 'B2_hetero']
+25238.7s 119 B7 config: {'heterogeneous_tau': True, 'readout_type': 'attention'}
+25238.7s 120 
+25238.7s 121 B7_combo on SHD (5 seeds)
+25248.9s 122 Ep   0: tr=0.0933 va=0.1564 best_va=0.1564
+25869.3s 123 Seed 42: acc=82.51% f1w=82.37% f1m=82.21% (628s)
+25879.7s 124 Ep   0: tr=0.1184 va=0.1917 best_va=0.1917
+26618.3s 125 Seed 123: acc=82.69% f1w=82.44% f1m=82.20% (747s)
+26628.9s 126 Ep   0: tr=0.0886 va=0.1983 best_va=0.1983
+27478.8s 127 Seed 456: acc=83.13% f1w=82.87% f1m=82.64% (858s)
+27490.0s 128 Ep   0: tr=0.0980 va=0.2138 best_va=0.2138
+28333.0s 129 Seed 789: acc=85.16% f1w=85.02% f1m=84.79% (852s)
+28343.3s 130 Ep   0: tr=0.1423 va=0.2292 best_va=0.2292
+28944.9s 131 Seed 1024: acc=82.51% f1w=81.51% f1m=81.34% (610s)
+28944.9s 132 => 83.20% ± 1.01%  F1w=82.84% ± 1.17%  F1m=82.64% ± 1.16%
+28945.1s 133 
+28945.1s 134 LSTMBaseline on SHD (5 seeds)
+29659.5s 135 Seed 42: acc=73.63% f1w=73.90%
+30337.2s 136 Seed 123: acc=75.09% f1w=74.34%
+31005.5s 137 Seed 456: acc=76.19% f1w=76.65%
+31453.3s 138 Seed 789: acc=73.19% f1w=72.89%
+32100.5s 139 Seed 1024: acc=78.71% f1w=78.61%
+32100.5s 140 => 75.36% ± 1.98%
+32100.5s 141 
+32100.5s 142 CNNBaseline on SHD (5 seeds)
+32357.6s 143 Seed 42: acc=87.94% f1w=87.62%
+32571.9s 144 Seed 123: acc=89.62% f1w=88.47%
+33036.3s 145 Seed 456: acc=87.81% f1w=87.08%
+33353.2s 146 Seed 789: acc=87.10% f1w=86.39%
+33566.0s 147 Seed 1024: acc=91.34% f1w=91.26%
+33566.0s 148 => 88.76% ± 1.53%
+33717.1s 149 ECG_DIR: /kaggle/input/datasets/khyeh0719/ptb-xl-dataset/ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1
+33719.1s 150 Loading ECG waveforms...
+34173.2s 151 ECG: tr=(17100, 1000, 12), va=(2155, 1000, 12), te=(2162, 1000, 12)
+34175.4s 152 ECG input: 12, bins: 250, classes: 5
+34175.5s 153 ======================================================================
+34175.5s 154 ECG: ARCHITECTURE SWEEP (5 seeds each)
+34175.5s 155 ======================================================================
+34175.5s 156 
+34175.5s 157 B0_base on ECG (5 seeds)
+34236.1s 158 Ep   0: tr=0.4975 va=0.5360 best_va=0.5360
+39562.3s 159 Seed 42: acc=62.67% f1w=58.98% f1m=46.81% (5382s)
+39623.5s 160 Ep   0: tr=0.4989 va=0.5415 best_va=0.5415
+42709.0s 161 Seed 123: acc=62.67% f1w=59.42% f1m=46.80% (3143s)
+42770.6s 162 Ep   0: tr=0.5040 va=0.5420 best_va=0.5420
